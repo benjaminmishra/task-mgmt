@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer;
 
 namespace TaskManagement.Data;
 
@@ -14,6 +15,7 @@ public class TaskManagementDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        optionsBuilder.UseSqlServer("Server=localhost,1434;Database=TaskMgmt;User Id=sa;Password=p@ss0wrd!;");
         base.OnConfiguring(optionsBuilder);
     }
 }
