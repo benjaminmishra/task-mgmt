@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TaskManagement.Data;
-
+using TaskManagement.Api.Dto;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TaskManagement.Api.Controllers
@@ -19,30 +21,58 @@ namespace TaskManagement.Api.Controllers
 
         // GET: api/<TaskController>
         [HttpGet]
-        public List<TaskManagement.Data.Task> Get()
+        public List<GetTask> Get()
         {
-            var task = _context.Tasks.ToList();
-            return task;
+            var tasks = _context.Tasks.Include(x=>x.TaskStatus).Select(x=> new GetTask {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                Status = x.TaskStatus.Status
+            }).ToList();
+
+            return tasks;
         }
 
         // GET api/<TaskController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult<GetTask> Get(int id)
         {
-            return "value";
+            var task = _context.Tasks.Include(x => x.TaskStatus).FirstOrDefault(x => x.Id == id);
+
+            if (task != null)
+            {
+                var result = new GetTask
+                {
+                    Id = task.Id,
+                    Name = task.Name,
+                    Description = task.Description,
+                    Status = task.TaskStatus.Status
+                };
+
+                return Ok(result);
+            }
+            else
+                return NotFound();
         }
 
         // POST api/<TaskController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post(CreateTaskDto createTaskReq)
         {
-            _context.Tasks.Add(new Data.Task { Name = value });
+            Data.Task task = new Data.Task {
+                Name = createTaskReq.Name,
+                Description = createTaskReq.Description,
+                StatusId = 1
+            };
+            _context.Tasks.Add(task);
+            _context.SaveChanges();
         }
 
         // PUT api/<TaskController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id)
         {
+            
         }
 
         // DELETE api/<TaskController>/5
