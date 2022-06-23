@@ -7,8 +7,9 @@ public class TaskManagementDbContext : DbContext
 {
     public DbSet<Task> Tasks { get; set; }
     public DbSet<Step> Steps { get; set; }
+    public virtual DbSet<UserInfo> UserInfos { get; set; }
 
-    public TaskManagementDbContext(DbContextOptions options):base(options) { }
+    public TaskManagementDbContext(DbContextOptions options) : base(options) { }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -35,6 +36,17 @@ public class TaskManagementDbContext : DbContext
             Id = 3,
             Status = "Complete",
             Description = "Complete"
+        }
+        );
+
+        builder.Entity<UserInfo>().HasData(new UserInfo
+        {
+            UserName = "jhon",
+            CreatedDate = DateTime.UtcNow,
+            DisplayName = "John Doe",
+            Email = "john@abc.com",
+            Password = "xyz",
+            UserId = 1,
         }
         );
     }

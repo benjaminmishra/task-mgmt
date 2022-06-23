@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskManagement.Data;
 
@@ -11,9 +12,10 @@ using TaskManagement.Data;
 namespace TaskManagement.Data.Migrations
 {
     [DbContext(typeof(TaskManagementDbContext))]
-    partial class TaskManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220623122304_AddUserInfos")]
+    partial class AddUserInfos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,17 +137,6 @@ namespace TaskManagement.Data.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("UserInfos");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 1,
-                            CreatedDate = new DateTime(2022, 6, 23, 12, 43, 16, 936, DateTimeKind.Utc).AddTicks(6008),
-                            DisplayName = "John Doe",
-                            Email = "john@abc.com",
-                            Password = "xyz",
-                            UserName = "jhon"
-                        });
                 });
 
             modelBuilder.Entity("TaskManagement.Data.Step", b =>
