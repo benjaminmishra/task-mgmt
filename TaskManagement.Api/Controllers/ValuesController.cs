@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace TaskManagement.Api.Controllers;
 
-[Authorize]
+[Authorize(AuthenticationSchemes = "BasicAuthentication")]
 [Route("api/[controller]")]
 [ApiController]
 public class ValuesController : ControllerBase
